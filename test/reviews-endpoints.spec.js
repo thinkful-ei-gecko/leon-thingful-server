@@ -91,7 +91,6 @@ describe('Reviews Endpoints', function() {
           expect(res.body.text).to.eql(newReview.text)
           expect(res.body.thing_id).to.eql(newReview.thing_id)
           expect(res.body.user.id).to.eql(testUser.id)
-          expect(res.body.user_id).to.eql(testUser.id)
           expect(res.headers.location).to.eql(`/api/reviews/${res.body.id}`)
           const expectedDate = new Date().toLocaleString()
           const actualDate = new Date(res.body.date_created).toLocaleString()
