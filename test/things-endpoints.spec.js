@@ -52,7 +52,7 @@ describe('Things Endpoints', function() {
         it (`Responds '401 no basic token' when no basic token present`,() => {
           return supertest(app)
             .get(endpoint.path)
-            .expect(401, {error: `Missing basic token`});
+            .expect(401, {error: `Missing bearer token`});
         })
 
         it (`Responds with 401 when no credentials present`, () => {
@@ -71,13 +71,6 @@ describe('Things Endpoints', function() {
             .expect(401, { error: `Unauthorized request`});
         });
 
-        it (`Responds with a 401 when password is incorrect`, () => {
-          const passwordIncorrect = { user_name: testUsers[0], password: 'XXXNO' }
-          return supertest(app)
-            .get(endpoint.path)
-            .set('Authorization', helpers.makeAuthHeader(passwordIncorrect))
-            .expect(401, { error: `Unauthorized request`});
-        })
       })
     })
   });
@@ -199,7 +192,7 @@ describe('Things Endpoints', function() {
         let userInfo = { user_name: testUser.user_name, password: testUser.password }
         return supertest(app)
           .get(`/api/things/${maliciousThing.id}`)
-          .set('Authorization', userInfo)
+          .set('Authorization', helpers.makeAuthHeader({user_name: testUsers[0].user_name, password: testUsers[0].password}))
           .expect(200)
           .expect(res => {
             expect(res.body.title).to.eql(expectedThing.title)

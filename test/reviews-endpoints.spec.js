@@ -36,7 +36,7 @@ describe('Reviews Endpoints', function() {
     it(`If there is no authorization present, then give a 401 status error`,() => {
       return supertest(app)
         .post('/api/reviews')
-        .expect(401, { error: `Missing basic token`});
+        .expect(401, { error: `Missing bearer token`});
     })
 
     it(`If there are no credentials in token, then give 401 error`,() => {
@@ -51,17 +51,6 @@ describe('Reviews Endpoints', function() {
 
     it (`If there is an invalid username, respond with 401`, () => {
       const userInvalidCreds = { user_name: 'notAUser', password: 'NotAPassword4Sure' };
-
-
-      return supertest(app)
-        .post('/api/reviews')
-        .set('Authorization', helpers.makeAuthHeader(userInvalidCreds))
-        .expect(401, { error: `Unauthorized request`});
-    })
-
-    it (`If there is an invalid password, respond with 401`, () => {
-      const userInvalidCreds = { user_name: testUsers[0], password: 'NotAPassword4Sure' };
-
 
 
       return supertest(app)
